@@ -52,6 +52,8 @@ call dein#add('scrooloose/nerdtree')
 call dein#add('davidhalter/jedi-vim', {
             \ 'autoload' : {'filetypes' : 'python'}
             \ })
+call dein#add('christoomey/vim-tmux-navigator')
+call dein#add('AndrewRadev/linediff.vim')
 
 call dein#end()
 
@@ -67,6 +69,7 @@ colorscheme molokai
 "colorscheme onedark
 syntax on
 set t_Co=256
+set t_ut=
 let g:molokai_original = 1
 let g:rehash256 = 1
 "let g:onedark_termcolors=16
@@ -122,8 +125,8 @@ augroup cpp-namespace
   autocmd FileType cpp inoremap <buffer><expr>; <SID>expand_namespace()
 augroup END
 augroup cpp-path
-      autocmd!
-      autocmd FileType cpp setlocal path=.,/usr/include,/usr/local/include,/usr/lib/c++/v1
+  autocmd!
+  autocmd FileType cpp setlocal path='.,/usr/include,/usr/local/include,/root/ns-3.26/source/ns-3.26/build/'
 augroup END
 function! s:expand_namespace()
   let s = getline('.')[0:col('.')-1]
@@ -149,9 +152,6 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=97
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=68
 let g:indent_guides_guide_size=1
 
-filetype on
-filetype plugin indent on
-
 let g:neocomplete#force_overwrite_completefunc = 1
 let g:acp_enableAtStartup = 0
 let g:neocomplete#enable_at_startup = 1
@@ -168,7 +168,9 @@ let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\
 imap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 smap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 let g:marching_enable_neocomplete = 1
-"let g:clang_library_path = '/usr/lib/'
+let g:marching_include_paths = [
+      \ "/root/ns-3.26/source/ns-3.26/build/"
+      \]
 let g:marching#clang_command#options = {
       \ "cpp" : "-std=c++1y"
       \}
@@ -181,3 +183,10 @@ autocmd FileType cpp set keywordprg=cppman
 command! -nargs=+ Cppman silent! call system("tmux split-window cppman " . expand(<q-args>))
       \}
 autocmd FileType cpp nnoremap <silent><buffer> K <Esc>:Cppman <cword><CR>
+let mapleader = "\<Space>"
+nnoremap <Leader>h :vsp<CR> :exe("tjump ".expand('<cword>'))<CR>
+nnoremap <Leader>v :split<CR> :exe("tjump ".expand('<cword>'))<CR>
+
+map <Leader>py :w !python3<CR>
+
+let g:syntastic_python_checkers = ['pyflakes', 'pep8']

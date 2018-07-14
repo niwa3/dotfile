@@ -54,6 +54,9 @@ call dein#add('davidhalter/jedi-vim', {
             \ })
 call dein#add('christoomey/vim-tmux-navigator')
 call dein#add('AndrewRadev/linediff.vim')
+call dein#add('tell-k/vim-autopep8', {
+            \ 'autoload' : {'filetypes' : 'python'}
+            \ })
 
 call dein#end()
 
@@ -190,3 +193,5 @@ nnoremap <Leader>v :split<CR> :exe("tjump ".expand('<cword>'))<CR>
 map <Leader>py :w !python3<CR>
 
 let g:syntastic_python_checkers = ['pyflakes', 'pep8']
+
+let g:autopep8_on_save = 1

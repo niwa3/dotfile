@@ -195,3 +195,4 @@ map <Leader>py :w !python3<CR>
 let g:syntastic_python_checkers = ['pyflakes', 'pep8']
 
 let g:autopep8_on_save = 1
+let g:autopep8_disable_show_diff=1

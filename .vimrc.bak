@@ -49,17 +49,9 @@ call dein#add('vim-jp/cpp-vim', {
             \ 'autoload' : {'filetypes' : 'cpp'}
             \ }) 
 call dein#add('scrooloose/nerdtree')
-call dein#add('jistr/vim-nerdtree-tabs')
 call dein#add('davidhalter/jedi-vim', {
             \ 'autoload' : {'filetypes' : 'python'}
             \ })
-call dein#add('fatih/vim-go', {
-            \ 'autoload' : {'filetypes' : 'go'}
-            \ })
-call dein#add('nsf/gocode', {
-            \ 'autoload' : {'filetypes' : 'go'}
-            \ })
-call dein#add('christoomey/vim-tmux-navigator')
 
 call dein#end()
 
@@ -67,6 +59,7 @@ if dein#check_install()
   call dein#install()
 endif
 
+filetype plugin indent on
 
 set nu
 set encoding=utf-8
@@ -96,21 +89,19 @@ set expandtab " insert space character insted tab
 inoremap <silent> jj <ESC> " change from insert to command by typping jj"
 set nosi                " disable smartindext
 set tabstop=2 shiftwidth=2 softtabstop=2        "set indent space
-set ts=2 sw=2 et
 set backspace=2
 set wrapscan
 set ignorecase
 set smartcase
 set noincsearch
 set hlsearch
-let mapleader = "\<Space>"
 let &t_ti.="\e[1 q"
 let &t_SI.="\e[5 q"
 let &t_EI.="\e[1 q"
 let &t_te.="\e[0 q"
 
 let g:lightline = {
-      \ 'colorscheme': 'wombat',
+      \ 'colorscheme': 'molokai',
       \ 'active': {
       \   'left': [['mode', 'paste'],
       \            ['fugitive', 'readonly', 'filename', 'modified']]
@@ -126,7 +117,6 @@ let g:lightline = {
       \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
       \ },
   \ }
-
 augroup cpp-namespace
   autocmd!
   autocmd FileType cpp inoremap <buffer><expr>; <SID>expand_namespace()
@@ -155,10 +145,8 @@ noremap :um :Unite file_mru
 
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
-"autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=97
-"autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=68
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=98
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=39
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=97
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=68
 let g:indent_guides_guide_size=1
 
 filetype on
@@ -186,28 +174,10 @@ let g:marching#clang_command#options = {
       \}
 set updatetime=200
 
-let g:nerdtree_tabs_open_on_console_startup=1
-"autocmd VimEnter * NERDTree
+autocmd VimEnter * NERDTree
 let g:NERDTreeShowBookmarks=1
 autocmd vimenter * wincmd p
-
-nnoremap <Leader>l gt
-
 autocmd FileType cpp set keywordprg=cppman
 command! -nargs=+ Cppman silent! call system("tmux split-window cppman " . expand(<q-args>))
       \}
 autocmd FileType cpp nnoremap <silent><buffer> K <Esc>:Cppman <cword><CR>
-
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 0
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_open= 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_cpp_compiler_options = '-std=c++11'
-let g:syntastic_c_include_dirs = ['~/bake/source/ns-3.28/src/']
-
-autocmd BufNewFile,BufRead *.py nnoremap <C-e> :!python3 % <CR>

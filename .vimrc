@@ -1,5 +1,6 @@
 let s:dein_dir = expand('~/.vim/dein')
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 if &compatible
   set nocompatible
@@ -14,9 +15,8 @@ execute 'set runtimepath^=' . s:dein_repo_dir
 call dein#begin(s:dein_dir)
 
 call dein#add('Shougo/dein.vim')
-call dein#add('Shougo/neocomplete.vim', {
-            \ 'autoload' : {'filetypes' : 'python'}
-            \ })
+call dein#add('Shougo/ddc.vim')
+call dein#add('vim-denops/denops.vim')
 call dein#add('Shougo/neosnippet.vim') 
 call dein#add('Shougo/neosnippet-snippets') 
 call dein#add('itchyny/lightline.vim') 
@@ -152,6 +152,7 @@ endfunction
 let g:neomru#time_format = "(%Y/%m/%d %H:%M:%S) "
 noremap :um :Unite file_mru
 
+let g:marching_enable_neocomplete = 1
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
 "autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=97
@@ -160,22 +161,9 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd ctermbg=98
 autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=39
 let g:indent_guides_guide_size=1
 
-let g:neocomplete#force_overwrite_completefunc = 1
 let g:acp_enableAtStartup = 0
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#enable_camel_case_completion = 1
-let g:neocomplete#enable_underbar_completion = 1
-let g:neocomplete#min_syntax_length = 2
-let g:neocomplete#enable_auto_select = 1
-if !exists('g:neocomplete#force_omni_input_patterns')
-        let g:neocomplete#force_omni_input_patterns = {}
-endif
-let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 imap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 smap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-let g:marching_enable_neocomplete = 1
 let g:marching_include_paths = [
       \ "/root/ns-3.26/source/ns-3.26/build/"
       \]
@@ -195,7 +183,6 @@ autocmd FileType cpp set keywordprg=cppman
 command! -nargs=+ Cppman silent! call system("tmux split-window cppman " . expand(<q-args>))
       \}
 autocmd FileType cpp nnoremap <silent><buffer> K <Esc>:Cppman <cword><CR>
-<<<<<<< HEAD
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -217,3 +204,5 @@ map <Leader>py :w !python3<CR>
 
 let g:autopep8_on_save = 1
 let g:autopep8_disable_show_diff=1
+
+let g:denops_disable_version_check = 1
